@@ -8,29 +8,38 @@ test.describe('BPM Pré-moldados E2E', () => {
     .andPath('application.bpm')
     .retrieveData();
 
-  test('deve carregar a home page com o título correto', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
+  });
+
+  test('deve carregar a home page com o título correto', async ({ page }) => {
     await expect(page).toHaveTitle(/BPM/i);
   });
 
-  test('deve navegar para "Sobre nós" e carregar o título correto', async ({
+  test('deve clicar em "Ver Portfólio" e ser direcionado para a página de Portfólio', async ({
     page
   }) => {
-    await page.goto(`${BASE_URL}sobre-nos`);
+    await page.getByRole('link', { name: 'Ver Portfólio' }).click();
+
+    await expect(page).toHaveURL(`${BASE_URL}portfolio`);
+    await expect(page).toHaveTitle(/Portfólio/i);
+  });
+
+  test('deve clicar em "Conheça mais" e ser direcionado para a página Sobre nós', async ({
+    page
+  }) => {
+    await page.getByRole('link', { name: 'Conheça mais' }).click();
+
+    await expect(page).toHaveURL(`${BASE_URL}sobre-nos`);
     await expect(page).toHaveTitle(/Sobre nós/i);
   });
 
-  test('deve navegar para "Soluções" e carregar o título correto', async ({
+  test('deve clicar em "Ver destaques" e ser direcionado para a página de Destaques', async ({
     page
   }) => {
-    await page.goto(`${BASE_URL}solucoes`);
-    await expect(page).toHaveTitle(/Soluções/i);
-  });
+    await page.getByRole('link', { name: 'Ver destaques' }).click();
 
-  test('deve navegar para "Portfólio" e carregar o título correto', async ({
-    page
-  }) => {
-    await page.goto(`${BASE_URL}portfolio`);
-    await expect(page).toHaveTitle(/Portfólio/i);
+    await expect(page).toHaveURL(`${BASE_URL}destaques`);
+    await expect(page).toHaveTitle(/Destaques/i);
   });
 });
