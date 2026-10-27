@@ -13,8 +13,11 @@ export default class BpmPage extends BasePage {
 
   async acceptCookies(): Promise<void> {
     const acceptButton = this.bpmElements.getAcceptCookiesButton();
-    if (await acceptButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+    try {
+      await acceptButton.waitFor({ state: 'visible', timeout: 15000 });
       await acceptButton.click();
+    } catch {
+      // aviso de cookies não apareceu, nada a fazer
     }
   }
 
